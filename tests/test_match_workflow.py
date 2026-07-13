@@ -7,14 +7,15 @@ def source() -> str:
     return HTML.read_text(encoding="utf-8")
 
 
-def test_resource_search_is_case_based_and_filterable():
+def test_resource_catalog_is_newest_first_and_filterable():
     s = source()
-    assert "selectedCaseId" in s
+    assert "function availableOffers" in s
     assert 'id="resource-keyword"' in s
     assert 'id="resource-category"' in s
     assert 'id="resource-availability"' in s
-    assert "일치 이유" in s
-    assert "data-open-proposal" in s
+    assert "localeCompare" in s
+    assert "data-resource-category" in s
+    assert "data-open-case-picker" in s
 
 
 def test_match_proposal_collects_operational_fields_and_has_preview():
@@ -67,10 +68,44 @@ def test_case_cards_show_all_stages_and_current_stage():
 def test_resource_tab_explains_donor_matching_in_plain_language():
     s = source()
     assert "['member-resources','연결','resource']" in s
-    assert "등록한 케이스에 맞는 후원자의 나눔을 찾아 연결합니다" in s
-    assert "연결 가능한 후원 나눔" in s
-    assert "선택한 나눔으로 연결 제안" in s
+    assert "후원 나눔 먼저 선택" in s
+    assert "연결할 미매칭 케이스를 고릅니다" in s
+    assert "후원 물품·서비스" in s
+    assert "선택한 나눔에 케이스 연결" in s
     assert 'class="advanced-filter"' in s
+
+
+def test_case_registration_recommends_similar_offers_before_match_request():
+    s = source()
+    assert 'name="category"' in s
+    assert 'name="requiredQty"' in s
+    assert 'name="unit"' in s
+    assert "function caseRecommendations" in s
+    assert "유사한 후원 나눔" in s
+    assert "data-use-recommendation" in s
+    assert "'case-recommendations':caseRecommendations" in s
+
+
+def test_connection_tab_lists_newest_offers_before_unmatched_case_picker():
+    s = source()
+    assert "최신 등록순" in s
+    assert "data-resource-category" in s
+    assert "function matchableCases" in s
+    assert "function memberSelectCase" in s
+    assert "data-open-case-picker" in s
+    assert "data-select-match-case" in s
+    assert "'member-select-case':memberSelectCase" in s
+
+
+def test_final_approval_continues_to_delivery_and_completion():
+    s = source()
+    assert "function adminDelivery" in s
+    assert "'admin-delivery':adminDelivery" in s
+    assert "배송 대기" in s
+    assert "data-start-delivery" in s
+    assert "배송 중" in s
+    assert "data-complete-delivery" in s
+    assert "m.status='완료'" in s
 
 
 if __name__ == "__main__":
