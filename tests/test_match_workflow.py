@@ -68,10 +68,10 @@ def test_case_cards_show_all_stages_and_current_stage():
 def test_resource_tab_explains_donor_matching_in_plain_language():
     s = source()
     assert "['member-resources','연결','resource']" in s
-    assert "후원 나눔 먼저 선택" in s
-    assert "연결할 미매칭 케이스를 고릅니다" in s
+    assert "연결 대기 후원" in s
+    assert "상세 내용을 확인한 뒤 내 케이스에 연결합니다" in s
     assert "후원 물품·서비스" in s
-    assert "선택한 나눔에 케이스 연결" in s
+    assert "내 케이스에 연결" in s
     assert 'class="advanced-filter"' in s
 
 
@@ -117,6 +117,26 @@ def test_offer_catalog_uses_thumbnail_feed_and_category_tabs():
     assert "['전체','식사','물품','서비스']" in s
     assert "data-resource-category" in s
     assert "최신 등록순" in s
+
+
+def test_offer_item_opens_detail_before_case_connection():
+    s = source()
+    assert "function memberOfferDetail" in s
+    assert "'member-offer-detail':memberOfferDetail" in s
+    assert "data-view-offer" in s
+    assert "후원 나눔 상세" in s
+    assert "내 케이스에 연결" in s
+    assert "data-open-case-picker" in s
+    assert 'class="offer-detail-image"' in s
+
+
+def test_connection_catalog_only_shows_waiting_offers():
+    s = source()
+    assert "connectionStatus" in s
+    assert "연결 대기" in s
+    assert "매칭 검토 중" in s
+    assert "o.connectionStatus='매칭 검토 중'" in s
+    assert "o.connectionStatus=o.qty>0?'연결 대기':'소진'" in s
 
 
 if __name__ == "__main__":
