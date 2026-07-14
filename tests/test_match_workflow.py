@@ -108,6 +108,17 @@ def test_final_approval_continues_to_delivery_and_completion():
     assert "m.status='완료'" in s
 
 
+def test_offer_catalog_uses_thumbnail_feed_and_category_tabs():
+    s = source()
+    assert "thumbnail:'assets/offer-" in s
+    assert 'class="offer-feed-item' in s
+    assert 'class="offer-thumb"' in s
+    assert 'class="offer-feed-copy"' in s
+    assert "['전체','식사','물품','서비스']" in s
+    assert "data-resource-category" in s
+    assert "최신 등록순" in s
+
+
 if __name__ == "__main__":
     tests = [value for name, value in sorted(globals().items()) if name.startswith("test_")]
     for test in tests:
