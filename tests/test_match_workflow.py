@@ -139,6 +139,18 @@ def test_connection_catalog_only_shows_waiting_offers():
     assert "o.connectionStatus=o.qty>0?'연결 대기':'소진'" in s
 
 
+def test_donor_and_admin_lists_use_thumbnail_feeds():
+    s = source()
+    assert 'class="role-feed-item donor-offer-feed"' in s
+    assert 'class="role-feed-item donor-match-feed' in s
+    assert 'class="role-feed-item admin-case-feed' in s
+    assert 'class="role-feed-item admin-offer-feed"' in s
+    assert 'class="role-feed-thumb"' in s
+    assert "function matchCaseThumbnail" in s
+    assert "function donorOwnOffers" in s
+    assert "o.thumbnail||offerThumbnail(o.category)" in s
+
+
 if __name__ == "__main__":
     tests = [value for name, value in sorted(globals().items()) if name.startswith("test_")]
     for test in tests:
